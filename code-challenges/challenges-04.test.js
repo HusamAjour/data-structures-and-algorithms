@@ -53,9 +53,9 @@ Return an array containing all the matches.
 
 const isCapitalized = (str) => {
   let regexTest = /\b[A-Z].*?\b/g;
-  return str.match(regexTest);
+  return  str.match(regexTest) || [];
 };
-
+console.log(isCapitalized('We only want to Return the Words that begin With a capital Letter'));
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 4
 
