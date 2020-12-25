@@ -9,19 +9,19 @@ Build a simple express server. Connect a '/hello' route that sends a greeting of
 const createServer = () => {
   const express = require('express');
   const app = express();
-  app.get('/hello',((req,res) =>{
+  app.get('/hello', ((req, res) => {
     res.send('Hello, World!');
   }));
-  app.get('/aboutme',((req,res) =>{
+  app.get('/aboutme', ((req, res) => {
     res.send(`Bachelor's degree in Computer Science from Princess Sumaya University for Technology - Class 2020. 3 years of experience in Freelance Front-End Development.`);
   }));
-  app.get('/favoritefoods',((req,res) =>{
+  app.get('/favoritefoods', ((req, res) => {
     res.send(['MAqlouba', 'Burger', 'Shawerma', 'Sushi']);
   }));
-  app.get('*', function(req, res){
+  app.get('*', function (req, res) {
     res.send('Not Found', 404);
   });
-  
+
   var server = app.listen(3301, function () {
     var port = server.address().port;
     console.log('Example app listening at port', port);
@@ -84,7 +84,6 @@ const totalSum = (input) => {
   }, 0);
   return total;
 };
-console.log(totalSum([[1, 2, 3, 4, 5], [6, 7, 2, 4, 5, 7], [9, 2, 3, 6,]]));
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 4
 
@@ -99,15 +98,14 @@ For example, [ [0,2,5,4], [2,4,10], [] ] should return [ [1, 32], [1024], [] ].
 
 const divisibleByFiveTwoToThePower = (input) => {
   let divByFive = input.map(val => {
-    return val.filter(v => (v%5 === 0 && typeof v === "number"));
+    return val.filter(v => (v % 5 === 0 && typeof v === "number"));
   });
 
   let twoToPower = divByFive.map(val => {
-    return val.map(v => Math.pow(2,v));
+    return val.map(v => Math.pow(2, v));
   });
   return twoToPower;
 };
-console.log(divisibleByFiveTwoToThePower([['one', 'two', 'five'], ['5', '10', '15'], [5]]));
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 5 - Stetch Goal
 
@@ -171,7 +169,14 @@ let starWarsData = [{
 }];
 
 let findMaleAndFemale = (data) => {
-  // Solution code here...
+  let maleAndFemale = [];
+  data.forEach(ch => {
+    if (ch.gender === 'male' || ch.gender === 'female') {
+      maleAndFemale.push(ch.name);
+    }
+  });
+  let maleAndFemaleString = maleAndFemale.join(' and ');
+  return maleAndFemaleString;
 };
 
 /* ------------------------------------------------------------------------------------------------
@@ -181,9 +186,19 @@ Write a function named findShortest that, given the Star Wars data from Challeng
 ------------------------------------------------------------------------------------------------ */
 
 let findShortest = (data) => {
-  // Solution code here...
-};
+  let shortestHeight = data.reduce((cumm, val) => {
+    console.log(`Cumm: ${cumm}, Val:${val.height}`);
+    if (cumm > parseInt(val.height)) { return parseInt(val.height); }
+    else { return cumm; }
+  }, 10000000000);
 
+  let shortestName = data.filter(ch => {
+    if(ch.height === shortestHeight.toString()){
+      return ch;
+    }
+  });
+  return shortestName[0].name;
+};
 /* ------------------------------------------------------------------------------------------------
 TESTS
 
@@ -268,14 +283,14 @@ describe('Testing challenge 4', () => {
   });
 });
 
-xdescribe('Testing challenge 5', () => {
+describe('Testing challenge 5', () => {
   test('It should return only characters that are male or female', () => {
     expect(findMaleAndFemale(starWarsData)).toStrictEqual('Luke Skywalker and Darth Vader and Leia Organa');
     expect(findMaleAndFemale([{ name: 'person', gender: 'female' }, { gender: 'lol' }, { name: 'persontwo', gender: 'male' }])).toStrictEqual('person and persontwo');
   });
 });
 
-xdescribe('Testing challenge 6', () => {
+describe('Testing challenge 6', () => {
   test('It should return the name of the shortest character', () => {
     expect(findShortest(starWarsData)).toStrictEqual('R2-D2');
   });

@@ -85,7 +85,8 @@ Write a function named getCourseKeys that takes in the courseInfo object and ret
 
 For example: (['name', 'duration', 'topics', 'finalExam']).
 ------------------------------------------------------------------------------------------------ */
-const courseInfo = { name: 'Code 301', duration: { dayTrack: '4 weeks', eveningTrack: '8 weeks'},
+const courseInfo = {
+  name: 'Code 301', duration: { dayTrack: '4 weeks', eveningTrack: '8 weeks' },
   topics: ['SMACSS', 'APIs', 'NodeJS', 'SQL', 'jQuery', 'functional programming'],
   finalExam: true
 };
@@ -101,7 +102,7 @@ Write a function named getHouses that returns a new array containing the names o
 
 const getHouses = (arr) => {
   let houses = [];
-  arr.forEach( character => {
+  arr.forEach(character => {
     houses.push(character['house']);
   });
   return houses;
@@ -119,9 +120,9 @@ hasChildrenValues(characters, 'Sansa') will return false
 ------------------------------------------------------------------------------------------------ */
 
 const hasChildrenValues = (arr, character) => {
-  for(let i =0; i< arr.length; i++){
-    if(arr[i].name === character){
-      if(arr[i].children !== null){
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].name === character) {
+      if (arr[i].children !== null) {
         return true;
       }
     }
@@ -137,8 +138,17 @@ The input and output of this function are the same as the input and output from 
 ------------------------------------------------------------------------------------------------ */
 
 const hasChildrenEntries = (arr, character) => {
-  // Solution code here...
+  let hasChildren = false
+  arr.forEach(ch => {
+    if (ch.name === character) {
+      if (ch.children.length !== 0) {
+        hasChildren =  true;
+      }
+    }
+  });
+  return hasChildren;
 };
+console.log(hasChildrenEntries(characters, 'Cersei'));
 
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 6 - Stretch Goal
@@ -147,9 +157,16 @@ Write a function named totalCharacters that takes in an array and returns the nu
 ------------------------------------------------------------------------------------------------ */
 
 const totalCharacters = (arr) => {
-  // Solution code here...
+  let totalCharacters = 0;
+  arr.forEach(ch => {
+    totalCharacters++;
+    if (ch.spouse !== null) {
+      totalCharacters++
+    }
+    totalCharacters += ch.children.length;
+  });
+  return totalCharacters;
 };
-
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 7 - Stretch Goal
 
@@ -162,10 +179,17 @@ For example: [{ house: 'Stark', members: 7 }, { house: 'Arryn', members: 3 }, ..
 
 const houseSize = (arr) => {
   const sizes = [];
-  // Solution code here...
+  arr.forEach(ch => {
+    let totalMembers = 1;
+    if (ch.spouse !== null) {
+      totalMembers++
+    }
+    totalMembers += ch.children.length;
+    sizes.push({ house: ch.house, members: totalMembers });
+  });
+  console.log(sizes);
   return sizes;
 };
-
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 8 - Stretch Goal
 
@@ -186,10 +210,18 @@ const deceasedSpouses = ['Catelyn', 'Lysa', 'Robert', 'Khal Drogo', 'Alerie'];
 
 const houseSurvivors = (arr) => {
   const survivors = [];
-  // Solution code here...
+  arr.forEach(ch => {
+    let totalMembers = 1;
+    if (ch.spouse !== null && !deceasedSpouses.includes(ch.spouse)) {
+      totalMembers++
+    }
+    totalMembers += ch.children.length;
+    survivors.push({ house: ch.house, members: totalMembers });
+  });
+  console.log(survivors);
   return survivors;
 };
-
+houseSurvivors(characters);
 /* ------------------------------------------------------------------------------------------------
 TESTS
 
@@ -232,7 +264,7 @@ describe('Testing challenge 4', () => {
   });
 });
 
-xdescribe('Testing challenge 5', () => {
+describe('Testing challenge 5', () => {
   test('It should return true for characters that have children', () => {
     expect(hasChildrenEntries(characters, 'Eddard')).toBeTruthy();
   });
@@ -242,26 +274,26 @@ xdescribe('Testing challenge 5', () => {
   });
 });
 
-xdescribe('Testing challenge 6', () => {
+describe('Testing challenge 6', () => {
   test('It should return the number of characters in the array', () => {
     expect(totalCharacters(characters)).toStrictEqual(26);
   });
 });
 
-xdescribe('Testing challenge 7', () => {
+describe('Testing challenge 7', () => {
   test('It should return an object for each house containing the name and size', () => {
     expect(houseSize(characters)).toStrictEqual([{ house: 'Stark', members: 7 }, { house: 'Arryn', members: 3 }, { house: 'Lannister', members: 5 }, { house: 'Targaryen', members: 5 }, { house: 'Tyrell', members: 4 }, { house: 'Greyjoy', members: 1 }, { house: 'Snow', members: 1 }]);
     expect(houseSize(characters).length).toStrictEqual(7);
   });
 });
 
-xdescribe('Testing challenge 8', () => {
+describe('Testing challenge 8', () => {
   test('It should not include any deceased spouses', () => {
     expect(houseSurvivors(characters)).toStrictEqual([{ house: 'Stark', members: 6 }, { house: 'Arryn', members: 2 }, { house: 'Lannister', members: 4 }, { house: 'Targaryen', members: 4 }, { house: 'Tyrell', members: 3 }, { house: 'Greyjoy', members: 1 }, { house: 'Snow', members: 1 }]);
   });
 });
 
 
-function createSnippetWithJQuery(html){
+function createSnippetWithJQuery(html) {
   return cheerio.load(html);
 }
