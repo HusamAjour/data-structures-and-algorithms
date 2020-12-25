@@ -208,7 +208,7 @@ const removeLastCharacters = (str, numberOfCharacters) => {
   } else if (numberOfCharacters >= str.length) {
     return '';
   } else {
-    return str.slice(0, str.length-numberOfCharacters);
+    return str.slice(0, str.length - numberOfCharacters);
   }
 };
 
@@ -220,10 +220,13 @@ Write a function named totalSumCSV that, given a string of comma-separated value
 
 const totalSumCSV = (str) => {
   let total = 0;
-  // Solution code here...
+  let arr = str.split(',');
+  arr.forEach(num => {
+    total += parseInt(num);
+  });
+  console.log(total);
   return total;
 };
-
 
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 10 - Stretch Goal
@@ -234,9 +237,17 @@ For example, removeVowels('gregor') returns 'grgr'.
 ------------------------------------------------------------------------------------------------ */
 
 const removeVowels = (str) => {
-  // Solution code here...
+  let vowels = ["a", "e", "i", "o", "u"];
+  let arr = str.split('');
+  let newStr = '';
+  arr.forEach(val => {
+    if(!vowels.includes(val)){
+      newStr+=val;
+    }
+  });
+  console.log(newStr);
+  return newStr;
 };
-
 /* ------------------------------------------------------------------------------------------------
 CHALLENGE 11 - Stretch Goal
 
@@ -248,9 +259,31 @@ Similarly, extractVowels('The quick brown fox') returns ['Th qck brwn fx', 'eioo
 ------------------------------------------------------------------------------------------------ */
 
 const extractVowels = (str) => {
-  // Solution code here...
-};
+  let vowels = ["a", "e", "i", "o", "u"];
+  let arr = str.split('');
+  let strVowels = '';
+  let newStr = '';
+  arr.forEach(val => {
+    if(!vowels.includes(val.toLowerCase())){
+      newStr+=val;
+    }else{
+      strVowels+=val;
+    }
+  });
+strVowels = strVowels.split('');
+  strVowels.sort((a,b) =>{
+    if(a.toLowerCase() < b.toLowerCase()){return -1}
+    else if(a.toLowerCase() > b.toLowerCase()){return 1}
+    else {return 0}
+  });
 
+  strVowels = strVowels.join('');
+
+  console.log(newStr);
+  console.log(strVowels);
+  return [newStr, strVowels];
+};
+extractVowels('The quick brown fox');
 /* ------------------------------------------------------------------------------------------------
 TESTS
 
@@ -338,14 +371,14 @@ describe('Testing challenge 8', () => {
   });
 });
 
-xdescribe('Testing challenge 9', () => {
+describe('Testing challenge 9', () => {
   test('It should add up the numbers contained within the string', () => {
     expect(totalSumCSV('1,4,5,7,2')).toStrictEqual(19);
     expect(totalSumCSV('147')).toStrictEqual(147);
   });
 });
 
-xdescribe('Testing challenge 10', () => {
+describe('Testing challenge 10', () => {
   test('It should return the string without vowels', () => {
     expect(removeVowels('gregor')).toStrictEqual('grgr');
     expect(removeVowels('gregor').length).toStrictEqual(4);
@@ -354,7 +387,7 @@ xdescribe('Testing challenge 10', () => {
   });
 });
 
-xdescribe('Testing challenge 11', () => {
+describe('Testing challenge 11', () => {
   test('It should return the string without vowels', () => {
     expect(extractVowels('gregor')).toStrictEqual(['grgr', 'eo']);
     expect(extractVowels('gregor').length).toStrictEqual(2);
