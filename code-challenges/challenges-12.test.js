@@ -9,8 +9,8 @@ using the 'reduce' method.
 E.g. [4,2,7,5,9,2] -> 9
 ------------------------------------------------------------------------------------------------ */
 const maxInArray = (arr) => {
-  let maxVal = arr.reduce((cumm, val) =>{
-    if(val > cumm){
+  let maxVal = arr.reduce((cumm, val) => {
+    if (val > cumm) {
       return val;
     }
     return cumm;
@@ -40,10 +40,10 @@ const alkiBeach = [33, 31, 147, 130, 27, 93, 38, 126, 141, 63, 46, 17];
 const cookieStores = [firstPike, seaTac, seattleCenter, capHill, alkiBeach];
 
 const grandTotal = (stores) => {
-  let hourlySales =[];
-  for(let j=0; j< stores[0].length; j++){
+  let hourlySales = [];
+  for (let j = 0; j < stores[0].length; j++) {
     let sum = 0;
-  for(let i=0; i< stores.length; i++){
+    for (let i = 0; i < stores.length; i++) {
       sum = sum + stores[i][j];
     }
     hourlySales.push(sum);
@@ -62,8 +62,8 @@ Write a function named salesData that uses forEach to iterate over the hourlySal
 ------------------------------------------------------------------------------------------------ */
 
 const salesData = (hours, data) => {
-  let foramttedArr =[];
-  for(let i=0; i< data.length; i++){
+  let foramttedArr = [];
+  for (let i = 0; i < data.length; i++) {
     foramttedArr.push({ "sales": `${data[i]} cookies`, "time": hours[i] });
   }
   return foramttedArr;
@@ -92,11 +92,11 @@ const errands = [
 ];
 
 const howManyTreats = (arr) => {
- let treatsCount = 0;
+  let treatsCount = 0;
   arr.forEach(s => {
-    if(s.store === 'Pet store'){
-    s.items.forEach(i => {
-        if(i.name === 'Treats'){
+    if (s.store === 'Pet store') {
+      s.items.forEach(i => {
+        if (i.name === 'Treats') {
           treatsCount = i.quantity;
         }
       });
@@ -124,7 +124,11 @@ The top row of the board is considered row zero and row numbers increase as they
 ------------------------------------------------------------------------------------------------ */
 
 const battleship = (board, row, col) => {
-  //  Solution code here...
+  if (board[row][col] === '#') {
+    return 'hit';
+  } else {
+    return 'miss';
+  }
 };
 
 /* ------------------------------------------------------------------------------------------------
@@ -136,7 +140,14 @@ For example, the following input returns a product of 720: [[1,2], [3,4], [5,6]]
 ------------------------------------------------------------------------------------------------ */
 
 const calculateProduct = (numbers) => {
-  // Solution code here...
+  let mul = 1;
+
+  numbers.forEach(num => {
+    num.forEach(n => {
+      mul *= n;
+    });
+  });
+  return mul;
 };
 
 /* ------------------------------------------------------------------------------------------------
@@ -156,7 +167,13 @@ const weeklyTemperatures = [
 ];
 
 const averageDailyTemperature = (weather) => {
-  // Solution code here...
+  let total = 0;
+  weather.forEach(week => {
+    week.forEach(day => {
+      total += day;
+    });
+  });
+  return total/(weather.length*7);
 };
 
 /* ------------------------------------------------------------------------------------------------
@@ -177,7 +194,22 @@ let lowestWeeklyTemperatureData = [
 ];
 
 const lowestWeeklyAverage = (weather) => {
-  // Solution code here...
+  let allWeeks = [];
+  weather.forEach(week => {
+    let weeklyAvg = week.reduce((cumm,day) => {
+      return cumm+day;
+    });
+    allWeeks.push(weeklyAvg/7);
+  });
+
+  let lowestAvg = allWeeks.reduce((cumm, week)=>{
+    if(cumm < week){
+      return cumm;
+    }else{
+      return week;
+    }
+  });
+  return lowestAvg;
 };
 
 /* ------------------------------------------------------------------------------------------------
@@ -193,9 +225,17 @@ For example, excel('1,1,1\n4,4,4\n9,9,9') returns [3, 12, 27].
 ------------------------------------------------------------------------------------------------ */
 
 const excel = (str) => {
-  // Solution code here...
+  let rows = str.split('\n');
+  let newArr = rows.map(entry =>{
+    let cols = entry.split(',');
+    let total = cols.reduce((cumm, val)=>{
+      return cumm + parseInt(val);
+    },0);
+    return total;
+  });
+  return newArr;
 };
-
+console.log(excel('1,1,1\n4,4,4\n9,9,9'));
 /* ------------------------------------------------------------------------------------------------
 TESTS
 
@@ -249,7 +289,7 @@ describe('Testing challenge 4', () => {
   });
 });
 
-xdescribe('Testing challenge 5', () => {
+describe('Testing challenge 5', () => {
   const battleshipData = [
     ['#', ' ', '#', ' '],
     ['#', ' ', '#', ' '],
@@ -268,7 +308,7 @@ xdescribe('Testing challenge 5', () => {
   });
 });
 
-xdescribe('Testing challenge 6', () => {
+describe('Testing challenge 6', () => {
   test('It should multiply all the numbers together', () => {
     expect(calculateProduct([[1, 2], [3, 4], [5, 6]])).toStrictEqual(720);
   });
@@ -281,20 +321,20 @@ xdescribe('Testing challenge 6', () => {
   });
 });
 
-xdescribe('Testing challenge 7', () => {
+describe('Testing challenge 7', () => {
   test('It should calculate and return the average temperature of the data set', () => {
     expect(averageDailyTemperature(weeklyTemperatures)).toStrictEqual(60.25);
   });
 });
 
-xdescribe('Testing challenge 8', () => {
+describe('Testing challenge 8', () => {
   test('It should return the lowest weekly average temperature within the data set', () => {
     expect(lowestWeeklyAverage(weeklyTemperatures)).toStrictEqual(57);
     expect(lowestWeeklyAverage(lowestWeeklyTemperatureData)).toStrictEqual(46);
   });
 });
 
-xdescribe('Testing challenge 9', () => {
+describe('Testing challenge 9', () => {
   test('It should return the total count for each row', () => {
     let result = excel('1,1,1\n4,4,4\n9,9,9');
     expect(result.length).toStrictEqual(3);

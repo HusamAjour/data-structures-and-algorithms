@@ -12,11 +12,11 @@ const createServer = () => {
   const express = require('express');
   const app = express();
 
-  app.get('/',(req, res)=>{
+  app.get('/', (req, res) => {
     res.status(200).send('Heloooo');
   });
 
-  app.delete('/things/1',(req, res)=>{
+  app.delete('/things/1', (req, res) => {
     res.status(405).send('Deleeteee');
   });
 
@@ -39,7 +39,7 @@ For example, ['apple', 'banana', 'MacGyver'] returns ['Apple', 'Banana', 'MacGyv
 
 const toTitleCase = (arr) => {
   let newArr = arr.map(str => {
-    return str.substring(0,1).toUpperCase()+ str.substring(1);
+    return str.substring(0, 1).toUpperCase() + str.substring(1);
   });
   return newArr;
 };
@@ -116,19 +116,19 @@ let starWarsData = [{
 }];
 
 let biggerThanLuke = (arr) => {
-    let massOfLuke = 0;
-    for(let i=0; i< arr.length; i++){
-      if(arr[i].name === 'Luke Skywalker'){
-        massOfLuke = parseInt(arr[i].mass);
-      }
+  let massOfLuke = 0;
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i].name === 'Luke Skywalker') {
+      massOfLuke = parseInt(arr[i].mass);
     }
-    let heavierThanLuke = [];
-     arr.forEach(ch =>{
-      if(parseInt(ch.mass) > massOfLuke){
-        heavierThanLuke.push(ch.name);
-      }
-    });
-    return heavierThanLuke.join(' - ');
+  }
+  let heavierThanLuke = [];
+  arr.forEach(ch => {
+    if (parseInt(ch.mass) > massOfLuke) {
+      heavierThanLuke.push(ch.name);
+    }
+  });
+  return heavierThanLuke.join(' - ');
 }
 
 /* ------------------------------------------------------------------------------------------------
@@ -146,11 +146,11 @@ This data could be sorted by name or price.
 ------------------------------------------------------------------------------------------------ */
 
 const sortBy = (property, arr) => {
-  arr.sort((a,b)=>{
-    if(a[property] > b[property]){
+  arr.sort((a, b) => {
+    if (a[property] > b[property]) {
       return 1;
     }
-    else if(a[property] < b[property]){
+    else if (a[property] < b[property]) {
       return -1;
     } else {
       return 0;
@@ -172,7 +172,8 @@ https://secure.com returns true because the URL is secure
 https:/missingslash.org returns false because the URL is malformed
 ------------------------------------------------------------------------------------------------ */
 const isSecure = (url) => {
-  // Solution code here...
+  let regex = /^(https:\/\/)/g;
+  return (url.match(regex)) ? true : false;
 };
 
 /* ------------------------------------------------------------------------------------------------
@@ -183,7 +184,7 @@ Write a function named detectTicTacToeWin that accepts a two-dimensional array o
 This function should return either true or false to indicate if someone won the game.
 
 Instead of trying to write crazy for loops to automate checking the rows, columns and diagonals consider writing one helper function that accepts three coordinate pairs and checks the values of the array at those locations. For instance helpCheck(row1, col1, row2, col2, row3, col3).
-
+ 
 Your function does not need to work for boards of any size other than 3x3.
 
 Here is a sample board:
@@ -195,9 +196,25 @@ Here is a sample board:
 ------------------------------------------------------------------------------------------------ */
 
 const detectTicTacToeWin = (board) => {
-  // Solution code here...
-};
+  let win = false;
+  const helpCheck = (er1, ec1, er2, ec2, er3, ec3) => {
+    if (board[er1][ec1] === board[er2][ec2] && board[er2][ec2] === board[er3][ec3] && board[er3][ec3] === board[er1][ec1]) {
+      if (board[er1][ec1] !== '') {
+        win = true;
+      }
+    }
+  }
+  helpCheck(0, 0, 0, 1, 0, 2)
+  helpCheck(0, 0, 1, 0, 2, 0);
+  helpCheck(1, 0, 1, 1, 1, 2);
+  helpCheck(0, 1, 1, 1, 2, 1);
+  helpCheck(2, 0, 2, 1, 2, 2);
+  helpCheck(0, 2, 1, 2, 2, 2);
+  helpCheck(0, 0, 1, 1, 2, 2);
+  helpCheck(2, 0, 1, 1, 0, 2);
 
+  return win;
+};
 /* ------------------------------------------------------------------------------------------------
 TESTS
 
@@ -287,7 +304,7 @@ describe('Testing challenge 4', () => {
   });
 });
 
-xdescribe('Testing challenge 5', () => {
+describe('Testing challenge 5', () => {
   test('It should check if url is https', () => {
 
     expect(isSecure('http://www.insecure.com')).toBe(false);
@@ -296,7 +313,7 @@ xdescribe('Testing challenge 5', () => {
   });
 });
 
-xdescribe('Testing challenge 6', () => {
+describe('Testing challenge 6', () => {
   test('It should return true if there are three in a row', () => {
     expect(detectTicTacToeWin([['X', '', 'O'], ['X', 'O', ''], ['X', 'O', 'X']])).toStrictEqual(true);
     expect(detectTicTacToeWin([['O', '', 'X'], ['X', 'O', 'X'], ['X', '', 'O']])).toStrictEqual(true);
